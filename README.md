@@ -17,7 +17,8 @@ sudo cp snapper-rollback.conf /etc/
 ## Config file
 Edit `/etc/snapper-rollback.conf` and make sure all the settings have the right
 values. You don't have to do this, but if you don't, you'll have to manually
-mount your btrfs root subvolume to `/btrfsroot` before running the script.
+mount your btrfs root subvolume to `/btrfsroot` before running the script. Uncomment
+external_boot = True to have your .bootbackup restored.
 
 ## Usage
 ```
