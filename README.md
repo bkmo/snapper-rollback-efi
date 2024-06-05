@@ -18,7 +18,11 @@ sudo cp snapper-rollback.conf /etc/
 Edit `/etc/snapper-rollback.conf` and make sure all the settings have the right
 values. You don't have to do this, but if you don't, you'll have to manually
 mount your btrfs root subvolume to `/btrfsroot` before running the script. Uncomment
-external_boot = True to have your .bootbackup restored.
+external_boot = True to have your .bootbackup restored. 
+
+## This modded version adds a boot backup hook to Pacman. /boot will be backed up to
+/.bootbackup every kernel update-install-remove. This will happen whether you decide to
+restore it or not.
 
 ## Usage
 ```
