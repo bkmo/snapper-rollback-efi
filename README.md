@@ -21,7 +21,7 @@ mount your btrfs root subvolume to `/btrfsroot` before running the script. Uncom
 external_boot = True to have your .bootbackup restored. 
 
 This modded version adds a boot backup hook to Pacman. /boot will be backed up to
-/.bootbackup every kernel update-install-remove. This will happen whether you decide to
+/.bootbackup every kernel upgrade-install. This will happen whether you decide to
 restore it or not.
 
 ## Usage
