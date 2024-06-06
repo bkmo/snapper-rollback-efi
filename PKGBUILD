@@ -2,7 +2,7 @@
 # Maintainer: Julien <aur dot arch at fastmail dot com>
 pkgname=snapper-rollback-boot
 pkgver=1.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Script to rollback snapper snapshots as described here https://wiki.archlinux.org/index.php/Snapper#Suggested_filesystem_layout'
 arch=('any')
 license=('GPL3')
