@@ -21,7 +21,7 @@ sha256sums=('SKIP'
 
 
     package() {
-    install -Dm 0644  "95_boot-backup.hook" -t "$pkgdir/usr/share/libalpm/hooks/zz-snap-boot-backup.hook"
+    install -Dm 0644  "95_boot-backup.hook" "$pkgdir/usr/share/libalpm/hooks/zz-snap-boot-backup.hook"
     install -Dm 0644  "$pkgname/snapper-rollback.conf" -t "$pkgdir/etc/"
     install -Dm 0755  "$pkgname/snapper-rollback.py" "$pkgdir/usr/bin/snapper-rollback"
 }
