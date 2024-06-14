@@ -20,7 +20,7 @@ values. You don't have to do this, but if you don't, you'll have to manually
 mount your btrfs root subvolume to `/btrfsroot` before running the script. Uncomment
 external_boot = True to have your .bootbackup restored. 
 
-This modded version adds a boot backup hook to Pacman. /boot will be backed up to
+This modded version adds an /efi backup hook to Pacman. /efi will be backed up to
 /.bootbackup every kernel upgrade-install. This will happen whether you decide to
 restore it or not.
 
