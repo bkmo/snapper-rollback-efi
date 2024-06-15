@@ -1,0 +1,22 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Target = systemd
+Target = grub
+Target = linux-firmware
+
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = boot/vmlinuz-*
+Target = usr/lib/modules/*/vmlinuz
+Target = usr/lib/initcpio/*
+
+[Action]
+Description = Post-Transaction backup of /efi...
+When = PostTransaction
+Exec = /usr/bin/bash -c 'rm -rf /.bootbackup/efi && mkdir -p /.bootbackup/efi && cp -aT /efi /.bootbackup/efi'
+
