@@ -18,7 +18,7 @@ source=("git+https://github.com/bkmo/snapper-rollback-efi"
         "04-snap-efi-pre-backup.hook"
         "zz-snap-efi-post-backup.hook")
 sha256sums=('SKIP'
-            '228f6a4b9c453d69b605316b47ccf55162c5b667b8d0764d3af35d5c01d43427'
+            '896092a3feaa997ce510916a446b2721def69a451ab378ec5fd5df9f1e4b8c1b'
             '1c1143cd433d9323d13baab7dbcd76ee8c8d1249c70fa6eee69a8d316b9885cf')
 
 
