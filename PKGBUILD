@@ -29,5 +29,5 @@ sha256sums=('SKIP'
     install -Dm 0644  "04-snap-efi-pre-backup.hook" -t "$pkgdir/usr/share/libalpm/hooks/"
     install -Dm 0644  "$pkgname/snapper-rollback.conf" -t "$pkgdir/etc/"
     install -Dm 0755  "$pkgname/snapper-rollback" -t "$pkgdir/usr/bin/"
-    install -Dm 0755  "rollback" -t "$pkgdir/usr/bin/
+    install -Dm 0755  "rollback" -t "$pkgdir/usr/bin/"
 }
