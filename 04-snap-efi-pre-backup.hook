@@ -16,7 +16,7 @@ Target = usr/lib/modules/*/vmlinuz
 Target = usr/lib/initcpio/*
 
 [Action]
-Description = Pre-Transaction /efi backup...
-When = PreTransaction
+Description = Post-Transaction /efi backup...
+When = PostTransaction
 Exec = /usr/bin/bash -c 'rm -rf /.bootbackup/efi && mkdir -p /.bootbackup/efi && cp -aT /efi /.bootbackup/efi'
 
