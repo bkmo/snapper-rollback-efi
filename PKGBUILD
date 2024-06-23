@@ -18,8 +18,8 @@ sha256sums=('SKIP')
 
     package() {
     cd $pkgname
-    install -Dm 0644  "/04-snap-efi-backup.hook" "$pkgdir/usr/share/libalpm/hooks/zzz-efi-backup.hook"
-    install -Dm644  "/snapper-rollback.conf" -t "$pkgdir/etc/"
-    install -Dm755  "/snapper-rollback.py" "$pkgdir/usr/bin/snapper-rollback"
-    install -Dm 0755  "/rollback" -t "$pkgdir/usr/bin/"
+    install -Dm 0644  "04-snap-efi-backup.hook" "$pkgdir/usr/share/libalpm/hooks/zzz-efi-backup.hook"
+    install -Dm644  "snapper-rollback.conf" -t "$pkgdir/etc/"
+    install -Dm755  "snapper-rollback.py" "$pkgdir/usr/bin/snapper-rollback"
+    install -Dm 0755  "rollback" -t "$pkgdir/usr/bin/"
     }
