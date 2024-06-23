@@ -13,7 +13,6 @@ provides=('snapper-rollback')
 conflicts=('rollback-git' 'snapper-rollback''snapper-rollback-boot')
 replaces=('rollback-git' 'snapper-rollback''snapper-rollback-boot')
 backup=(etc/snapper-rollback.conf)
-install=snapper-rollback.install
 source=("git+https://github.com/bkmo/snapper-rollback-efi"
         "04-snap-efi-pre-backup.hook"
         "rollback")
@@ -23,7 +22,7 @@ sha256sums=('SKIP'
 
     package() {
     install -Dm 0644  "04-snap-efi-backup.hook" "$pkgdir/usr/share/libalpm/hooks/zzz-efi-backup.hook"
-    install -Dm 0644  "$pkgname/snapper-rollback.conf" -t "$pkgdir/etc/"
-    install -Dm 0755  "$pkgname/snapper-rollback" -t "$pkgdir/usr/bin/"
+    install -Dm644  "snapper-rollback.conf" -t "$pkgdir/etc/"
+    install -Dm755  "snapper-rollback.py" "$pkgdir/usr/bin/snapper-rollback"
     install -Dm 0755  "rollback" -t "$pkgdir/usr/bin/"
     }
