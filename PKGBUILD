@@ -6,19 +6,15 @@ pkgrel=1
 pkgdesc='Script to rollback snapper snapshots as described here https://wiki.archlinux.org/index.php/Snapper#Suggested_filesystem_layout'
 arch=('any')
 license=('GPL3')
-url='https://github.com/jrabinow/snapper-rollback'
+url='https://github.com/bkmo/snapper-rollback-efi'
 depends=('coreutils' 'python' 'btrfs-progs' 'snapper')
 makedepends=('git')
 provides=('snapper-rollback')
 conflicts=('rollback-git' 'snapper-rollback''snapper-rollback-boot')
 replaces=('rollback-git' 'snapper-rollback''snapper-rollback-boot')
 backup=(etc/snapper-rollback.conf)
-source=("git+https://github.com/bkmo/snapper-rollback-efi"
-        "04-snap-efi-pre-backup.hook"
-        "rollback")
-sha256sums=('SKIP'
-            '896092a3feaa997ce510916a446b2721def69a451ab378ec5fd5df9f1e4b8c1b'
-            '748676045d28fd9bcd35601754826e50cf60c70b075c1d29bb545e555347e948' )
+source=("git+$url")
+sha256sums=('SKIP')
 
     package() {
     install -Dm 0644  "04-snap-efi-backup.hook" "$pkgdir/usr/share/libalpm/hooks/zzz-efi-backup.hook"
