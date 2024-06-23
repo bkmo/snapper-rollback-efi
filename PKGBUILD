@@ -8,7 +8,6 @@ arch=('any')
 license=('GPL3')
 url='https://github.com/bkmo/snapper-rollback-efi'
 depends=('coreutils' 'python' 'btrfs-progs' 'snapper')
-makedepends=('git')
 provides=('snapper-rollback')
 conflicts=('rollback-git' 'snapper-rollback''snapper-rollback-boot')
 replaces=('rollback-git' 'snapper-rollback''snapper-rollback-boot')
