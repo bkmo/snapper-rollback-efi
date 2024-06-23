@@ -14,7 +14,7 @@ conflicts=('rollback-git' 'snapper-rollback''snapper-rollback-boot')
 replaces=('rollback-git' 'snapper-rollback''snapper-rollback-boot')
 backup=(etc/snapper-rollback.conf)
 source=("$url/archive/refs/tags/$pkgver.tar.gz")
-sha256sums=('SKIP')
+sha256sums=('6108fb4899eb341eecdffd76fd3c7e0c72ced4778472c296be1747918616659a')
 
     package() {
     cd $pkgname-$pkgver
