@@ -124,16 +124,12 @@ def rollback(subvol_main, subvol_main_newname, subvol_rollback_src, dev, dry_run
             else:
                 os.rename(subvol_main_newname, subvol_main)
 
-
 def rollback_efi_partiton(efi_backup_dir,dry_run):
     full_path = efi_backup_dir+"/efi/EFI/Linux"
-    if dry_run: 
-        LOG.info("rm -rf /efi/EFI/Linux/")
-        LOG.info("cp -ar {}/ /efi/EFI/".format(full_path))
+    if dry_run:
+        LOG.info("cp -ar {} /efi/EFI/".format(full_path))
     else:
-        os.system("rm -rf /efi/EFI/Linux/")
-        os.system("cp -ar {}/ /efi/EFI/".format(full_path))
-
+        os.system("cp -ar {} /efi/EFI/".format(full_path))
 
 def main():
     args = parse_args()
