@@ -125,11 +125,11 @@ def rollback(subvol_main, subvol_main_newname, subvol_rollback_src, dev, dry_run
                 os.rename(subvol_main_newname, subvol_main)
 
 def rollback_efi_partiton(efi_backup_dir,dry_run):
-    full_path = efi_backup_dir+"/efi/EFI/Linux"
+    full_path = efi_backup_dir+"/efi/EFI/Linux/"
     if dry_run:
-        LOG.info("rsync -avzq --delete {} /efi/EFI/".format(full_path))
+        LOG.info("rsync -avzq --delete {}* /efi/EFI/Linux/".format(full_path))
     else:
-        os.system("rsync -avzq --delete {} /efi/EFI/".format(full_path))
+        os.system("rsync -avzq --delete {}* /efi/EFI/Linux/".format(full_path))
 
 def main():
     args = parse_args()
