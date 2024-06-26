@@ -1,13 +1,14 @@
 # Maintainer: Gabby <28601 dash gabby at users dot noreply dot gitlab dot freedesktop dot org>
 # Maintainer: Julien <aur dot arch at fastmail dot com>
 pkgname=snapper-rollback-efi
-pkgver=1.0.1
+pkgver=1.0.2
 pkgrel=1
 pkgdesc='Script to rollback snapper snapshots as described here https://wiki.archlinux.org/index.php/Snapper#Suggested_filesystem_layout'
 arch=('any')
 license=('GPL3')
 url='https://github.com/bkmo/snapper-rollback-efi'
-depends=('coreutils' 'python' 'btrfs-progs' 'snapper')
+depends=('coreutils' 'python' 'btrfs-progs' 'rsync')
+optdepends=('snapper')
 provides=('snapper-rollback')
 conflicts=('rollback-git' 'snapper-rollback''snapper-rollback-boot')
 replaces=('rollback-git' 'snapper-rollback''snapper-rollback-boot')
