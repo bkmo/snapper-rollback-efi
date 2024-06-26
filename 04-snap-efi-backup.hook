@@ -18,5 +18,5 @@ Target = usr/lib/initcpio/*
 [Action]
 Description = Post-Transaction /efi backup...
 When = PostTransaction
-Exec = /usr/bin/bash -c 'rm -rf /.bootbackup/efi && mkdir -p /.bootbackup/efi && cp -aT /efi /.bootbackup/efi'
+Exec = /usr/bin/bash -c '/usr/bin/rsync -arq --mkpath --delete /efi/ /.bootbackup/efi'
 
