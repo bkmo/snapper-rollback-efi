@@ -15,11 +15,12 @@ fi
 ######################
 
 if [ -x "$(command -v snapper)" ]; then
+mount -o subvolid=5 /dev/mapper/cryptroot /mnt/btrfsroot
   snapper list 2>/dev/null
 fi
 
 if [ $? -ne 0 ] || ! [ -x "$(command -v snapper)" ]; then
-grep -Er '<date>|<type>' /.snapshots/*/info.xml | awk -F '</[^}]*>' '{print $1 $2}' | sed 's/[i][^:]*//' | sed 's/[/][^s]*//' | sed 's/[<][^>]*//' | tac -r | more
+grep -Er '<date>|<type>' /mnt/btrfsroot/@snapshots/*/info.xml | awk -F '</[^}]*>' '{print $1 $2}' | sed 's/[i][^:]*//' | sed 's/[/][^s]*//' | sed 's/[<][^>]*//' | tac -r | more
 fi
 
 echo
