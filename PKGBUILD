@@ -1,7 +1,7 @@
 # Maintainer: Gabby <28601 dash gabby at users dot noreply dot gitlab dot freedesktop dot org>
 # Maintainer: Julien <aur dot arch at fastmail dot com>
 pkgname=snapper-rollback-efi
-pkgver=1.0.5
+pkgver=1.0.6
 pkgrel=1
 pkgdesc='Script to rollback snapper snapshots as described here https://wiki.archlinux.org/index.php/Snapper#Suggested_filesystem_layout'
 arch=('any')
@@ -18,7 +18,7 @@ sha256sums=('SKIP')
 
     package() {
     cd $pkgname-$pkgver
-    install -Dm 0644  "04-snap-efi-backup.hook" "$pkgdir/usr/share/libalpm/hooks/99-efi-backup.hook"
+    install -Dm 0644  "zz1-efi-backup.hook" "$pkgdir/usr/share/libalpm/hooks/99-efi-backup.hook"
     install -Dm644  "snapper-rollback.conf" -t "$pkgdir/etc/"
     install -Dm755  "snapper-rollback.py" "$pkgdir/usr/bin/snapper-rollback"
     install -Dm 0755  "rollback" -t "$pkgdir/usr/bin/"
