@@ -1,0 +1,21 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Target = systemd
+Target = grub
+Target = linux-firmware
+
+[Trigger]
+Operation = Upgrade
+Operation = Install
+Operation = Remove
+Type = Path
+Target = usr/lib/modules/*/vmlinuz
+
+[Action]
+Description = Post-Transaction /efi backup...
+When = PostTransaction
+Exec = /usr/bin/bash -c '/usr/bin/rsync -a --mkpath --delete /efi/ /.bootbackup/efi/'
+Depends = rsync
