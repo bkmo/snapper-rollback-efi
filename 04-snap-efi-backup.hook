@@ -11,9 +11,8 @@ Target = linux-firmware
 Type = Path
 Operation = Install
 Operation = Upgrade
-Target = boot/vmlinuz-*
+Operation = Remove
 Target = usr/lib/modules/*/vmlinuz
-Target = usr/lib/initcpio/*
 
 [Action]
 Description = Post-Transaction /efi backup...
