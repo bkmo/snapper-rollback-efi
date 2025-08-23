@@ -32,4 +32,6 @@ echo "'snapper-rollback $1 $snap' command will be run."
 echo
 echo "Type 'CONFIRM' to continue or 'ENTER' to quit."
 echo
+mount /dev/nvme0n1p2 /efi
 snapper-rollback $1 $snap
+umount /efi
