@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+####################
+#  CHECK FOR ROOT  #
+####################
+
+if [ "$(id -u)" -ne 0 ]; then echo " $red Please run as root.$clr ex. sudo rollback" >&2; exit; fi
+##########################################################
+
+### Help #############
+if [ "$1" = "-h" ]; then
+snapper-rollback -h
+exit
+fi
+######################
+
+if [ -x "$(command -v snapper)" ]; then
+snapper list 2>/dev/null
+fi
+
+if  [ "$?" -eq 1 ] && [ -x "$(command -v xmllint)" ]; then
+xmllint --xpath 'string(/snapshot)' /.snapshots/*/info.xml | tac | more
+fi
+
+if  [ "$?" -eq 1 ] & ! [ -x "$(command -v xmllint)" ]; then
+grep -E ' <date>|<type>|<description>' /.snapshots/*/info.xml | awk -F '</[^}]*>' '{print $1 $2}' | sed 's/[i][^:]*//' | sed 's/[/][^s]*//' | sed 's/[<][^>>]*//' | tac | more
+fi
+
+echo
+read -p "Enter the snapshot number to restore : " snap
+
+echo -e "\nYou selected snapshot: '$snap'"
+echo
+echo "'snapper-rollback $1 $snap' command will be run."
+echo
+echo "Type 'CONFIRM' to continue or 'ENTER' to quit."
+echo
+snapper-rollback $1 $snap
