@@ -22,4 +22,9 @@ sha256sums=('SKIP')
     install -Dm644  "snapper-rollback.conf" -t "$pkgdir/etc/"
     install -Dm755  "snapper-rollback" -t "$pkgdir/usr/bin/"
     install -Dm755  "rollback" -t "$pkgdir/usr/bin/"
+    install -Dm755  "rollback-root" -t "$pkgdir/usr/local/bin/"
+    install -Dm755  "rollback-home" -t "$pkgdir/usr/local/bin/"
+    install -Dm755  "restoefi" -t "$pkgdir/usr/local/bin/"
+    install -Dm755  "btrfsassistant-rb" -t "$pkgdir/usr/local/bin/"
+
     }
