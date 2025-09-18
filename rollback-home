@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+####################
+#  CHECK FOR ROOT  #
+####################
+
+if [ "$(id -u)" -ne 0 ]; then echo " $red Please run as root.$clr ex. sudo rollback-home" >&2; exit; fi
+##########################################################
+
+### Help #############
+if [ "$1" = "-h" ]; then
+echo "rollback-home will prompt for snapshot to restore"
+echo "rollback-home <num> will restore the snapshot num"
+exit
+fi
+
+######################
+
+systemctl stop snapper-timeline.timer
+systemctl stop snapper-cleanup.timer
+
+mountpoint -q /mnt/btrfs || mount -o subvolid=5 /dev/mapper/cryptroot /mnt/btrfs
+mountpoint -q /mnt/efi || mount /dev/nvme0n1p2 /mnt/efi
+
+if [ -x "$(command -v snapper)" ]; then
+  snapper list 2>/dev/null
+fi
+
+if [ $? -ne 0 ] || ! [ -x "$(command -v snapper)" ]; then
+grep -Er '<date>|<type>|<description>' /mnt/btrfs/@home/.snapshots/*/info.xml | awk -F '</[^}]*>' '{print $1 $2}' | sed 's/[i][^:]*//' | sed 's/[/][^s]*//' | sed 's/[<][^>]*//' | tac -r | more
+
+fi
+
+echo
+read -p "Enter the snapshot number to restore : " snap
+set $snap $1
+echo -e "\nYou selected snapshot: '$1'"
+echo
+
+
+echo "Restore  @home/.snapshots/$1/ ?"
+echo
+
+function ask_yes_or_no() {
+    read -p "$1 ([y]es or [N]o): "
+    case $(echo $REPLY | tr '[A-Z]' '[a-z]') in
+        y|yes) echo "yes" ;;
+        *)     echo "no" ;;
+    esac
+}
+
+if [[ "no" == $(ask_yes_or_no "Are you sure?") ]]; then
+    echo "Skipped.....quitting."
+    systemctl start snapper-timeline.timer
+systemctl start snapper-cleanup.timer
+    exit 0
+    fi
+echo "Restoring snapshot $1......."
+echo
+mv /mnt/btrfs/@home /mnt/btrfs/@home_Backup
+btrfs subvolume snapshot /mnt/btrfs/@home_Backup/.snapshots/$1/snapshot /mnt/btrfs/@home
+echo
+echo "Moving /.snapshots back to @home subvolume"
+mv /mnt/btrfs/@home_Backup/.snapshots /mnt/btrfs/@home/
+echo
+echo "Saving the backup of @home"
+echo
+mv /mnt/btrfs/@home_Backup /mnt/btrfs/@homeBackup-$(date -Iminutes)
+echo
+echo "Restoring EFI backup from snapshot $1...."
+echo
+rsync -av --delete /mnt/btrfs/@home/.snapshots/$1/snapshot/.efibackup/efi/ /mnt/efi/
+echo
+echo "Snapshot $1 restored."
+echo
+systemctl start snapper-timeline.timer
+systemctl start snapper-cleanup.timer
+! mountpoint -q /mnt/btrfs || umount /mnt/btrfs
+! mountpoint -q /efi || umount /efi
+
+echo "A system reboot is needed. Do it now?"
+echo
+function ask_yes_or_no() {
+    read -p "$1 ([y]es or [N]o): "
+    case $(echo $REPLY | tr '[A-Z]' '[a-z]') in
+        y|yes) echo "yes" ;;
+        *)     echo "no" ;;
+    esac
+}
+
+if [[ "no" == $(ask_yes_or_no "Are you sure?") ]]; then
+    echo "Skipped.....quitting."
+    exit 0
+    fi
+echo system will reboot in 10 seconds (ctrl-c to quit)...
+sleep 10;systemctl reboot
+exit 0

@@ -1,0 +1,134 @@
+#!/usr/bin/env bash
+
+####################
+#  CHECK FOR ROOT  #
+####################
+
+if [ "$(id -u)" -ne 0 ]; then echo " $red Please run as root.$clr ex. sudo btrfsassistant-rb" >&2; exit; fi
+##########################################################
+
+### Help #############
+if [ "$1" = "-h" ]; then
+btrfs-assistant-bin -h
+exit
+fi
+######################
+
+if [ -x "$(command -v btrfs-assistant-bin)" ]; then
+systemctl stop snapper-timeline.timer
+systemctl stop snapper-cleanup.timer
+
+ btrfs-assistant-bin -l 2>/dev/null
+fi
+
+if [ $? -ne 0 ] || ! [ -x "$(command -v btrfs-assistant-bin)" ]; then
+systemctl start snapper-timeline.timer
+systemctl start snapper-cleanup.timer
+exit
+fi
+
+echo
+read -p "Enter the snapshot number to restore : " snap
+
+echo -e "\nYou selected snapshot: '$snap'"
+echo
+echo "'Would you like to rollback snapshot ID$snap?"
+echo
+function ask_yes_or_no() {
+    read -p "$1 ([y]es or [N]o): "
+    case $(echo $REPLY | tr '[A-Z]' '[a-z]') in
+        y|yes) echo "yes" ;;
+        *)     echo "no" ;;
+    esac
+}
+
+if [[ "no" == $(ask_yes_or_no "Are you sure?") ]]; then
+    echo "Skipped.....quitting."
+systemctl start snapper-timeline.timer
+systemctl start snapper-cleanup.timer
+    exit 0
+    fi
+echo
+btrfs-assistant-bin -r $snap
+if [[ $? -ne 0 ]] ; then
+    echo "Rollback was unsuccessful!"
+systemctl start snapper-timeline.timer
+systemctl start snapper-cleanup.timer
+    exit 1
+else
+    echo "Rolled back to snapshot $snap"
+fi
+
+if [ "$1" = "home" ] ; then
+systemctl start snapper-timeline.timer
+systemctl start snapper-cleanup.timer
+exit
+fi
+
+echo
+echo "Would you like to restore /efi from the snapshot?"
+echo
+
+function ask_yes_or_no() {
+    read -p "$1 ([y]es or [N]o): "
+    case $(echo $REPLY | tr '[A-Z]' '[a-z]') in
+        y|yes) echo "yes" ;;
+        *)     echo "no" ;;
+    esac
+}
+
+if [[ "no" == $(ask_yes_or_no "Are you sure?") ]]; then
+    echo "Skipped.....quitting."
+systemctl start snapper-timeline.timer
+systemctl start snapper-cleanup.timer
+    exit 0
+fi
+mountpoint -q /mnt/btrfs || mount -o subvolid=5 /dev/mapper/cryptroot /mnt/btrfs
+mountpoint -q /mnt/efi || mount /dev/nvme0n1p1 /mnt/efi
+  btrfs-assistant-bin -l 2>/dev/null
+echo
+echo "Select the snapshot number that corresponds to the ID you restored"
+  read -p "Enter the snapshot number to restore /efi: " efi
+
+echo -e "\nYou selected snapshot: '$efi'"
+echo
+echo "Would you like to restore /efi from snapshot $efi?"
+function ask_yes_or_no() {
+    read -p "$1 ([y]es or [N]o): "
+    case $(echo $REPLY | tr '[A-Z]' '[a-z]') in
+        y|yes) echo "yes" ;;
+        *)     echo "no" ;;
+    esac
+}
+
+if [[ "no" == $(ask_yes_or_no "Are you sure?") ]]; then
+    echo "Efi restore skipped.....quitting."
+
+! mountpoint -q /mnt/efi || umount /mnt/efi
+! mountpoint -q /mnt/btrfs || umount /mnt/btrfs
+systemctl start snapper-timeline.timer
+systemctl start snapper-cleanup.timer
+    exit 0
+fi
+echo
+echo "Restoring /efi backup from @snapshots/$efi/snapshot/.efibackup/efi/"
+echo
+rsync -av --delete /mnt/btrfs/@.snapshots/$efi/snapshot/.efibackup/efi/EFI/Linux/ /mnt/efi/EFI/Linux/
+
+if [[ $? -ne 0 ]] ; then
+    echo "Efi restore was unsuccessful!"
+
+systemctl start snapper-timeline.timer
+systemctl start snapper-cleanup.timer
+! mountpoint -q /mnt/efi || umount /mnt/efi
+! mountpoint -q /mnt/btrfs || umount /mnt/btrfs
+ exit 1
+else
+echo
+    echo 'Efi restore completed successfully'
+fi
+systemctl start snapper-timeline.timer
+systemctl start snapper-cleanup.timer
+! mountpoint -q /mnt/efi || umount /mnt/efi
+! mountpoint -q /mnt/btrfs || umount /mnt/btrfs
+exit 0
