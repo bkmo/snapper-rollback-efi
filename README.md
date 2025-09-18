@@ -1,6 +1,7 @@
 # Snapper-Rollback
 
 Python script to rollback BTRFS systems using the [ArchWiki suggested subvolume layout](https://wiki.archlinux.org/index.php/Snapper#Suggested_filesystem_layout)
+
 Restore of UKI's from snapshot to keep kernel in sync with snapshot. A few additional rollback scripts.
 ## Installation
 ### ArchLinux
