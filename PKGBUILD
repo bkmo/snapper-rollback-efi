@@ -20,6 +20,6 @@ sha256sums=('SKIP')
     cd $pkgname-$pkgver
     install -Dm644  "zz1-efi-backup.hook" -t "$pkgdir/usr/share/libalpm/hooks/"
     install -Dm644  "snapper-rollback.conf" -t "$pkgdir/etc/"
-    install -Dm755  "snapper-rollback.py" "$pkgdir/usr/bin/snapper-rollback"
+    install -Dm755  "snapper-rollback" -t "$pkgdir/usr/bin/"
     install -Dm755  "rollback" -t "$pkgdir/usr/bin/"
     }
