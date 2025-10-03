@@ -113,7 +113,7 @@ fi
 echo
 echo "Restoring /efi backup from @snapshots/$efi/snapshot/.efibackup/efi/"
 echo
-rsync -av --delete /mnt/btrfs/@.snapshots/$efi/snapshot/.efibackup/efi/EFI/Linux/ /mnt/efi/EFI/Linux/
+rsync -av --delete /mnt/btrfs/@snapshots/$efi/snapshot/.efibackup/efi/EFI/Linux/ /mnt/efi/EFI/Linux/
 
 if [[ $? -ne 0 ]] ; then
     echo "Efi restore was unsuccessful!"
