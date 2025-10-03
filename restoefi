@@ -24,13 +24,13 @@ snapper list 2>/dev/null
 
 
 elif  ! [ -x "$(command -v snapper)" ] & [ -x "$(command -v xmllint)" ]; then
-xmllint --xpath 'string(/snapshot)' /.snapshots/*/info.xml | tac | more
+xmllint --xpath 'string(/snapshot)' /mnt/btrfs/@snapshots/*/info.xml | tac | more
 
 
 #elif  ! [ -x "$(command -v snapper)" ] & ! [ -x "$(command -v xmllint)" ]; then
 
 else
-grep -E ' <date>|<type>|<description>' /.snapshots/*/info.xml | awk -F '</[^}]*>' '{print $1 $2}' | sed 's/[i][^:]*//' | sed 's/[/][^s]*//' | sed 's/[<][^>>]*//' | tac | more
+grep -E ' <date>|<type>|<description>' /mnt/btrfs/@snapshots/*/info.xml | awk -F '</[^}]*>' '{print $1 $2}' | sed 's/[i][^:]*//' | sed 's/[/][^s]*//' | sed 's/[<][^>>]*//' | tac | more
 fi
 #ls  /mnt/btrfs/@snapshots | tr '\n' '\n'
 #snapper list 2>/dev/null
@@ -42,7 +42,7 @@ read -p "Enter the snapshot number to restore : " snap
 set -- "$snap" "$1"
 echo -e "\nYou selected snapshot: '$1'"
 echo
-echo "Restore /efi backup from @.snapshots/$1/ ?"
+echo "Restore /efi backup from @snapshots/$1/ ?"
 echo
 function ask_yes_or_no() {
     read -p "$1 ([y]es or [N]o): "
@@ -62,9 +62,9 @@ systemctl start snapper-cleanup.timer
     fi
 
 echo
-echo "Restoring /efi backup from @.snapshots/$1/"
+echo "Restoring /efi backup from @snapshots/$1/"
 echo
-rsync -av --delete /mnt/btrfs/@.snapshots/$1/snapshot/.efibackup/efi/EFI/Linux/ /mnt/efi/EFI/Linux/
+rsync -av --delete /mnt/btrfs/@snapshots/$1/snapshot/.efibackup/efi/EFI/Linux/ /mnt/efi/EFI/Linux/
 if [[ $? -ne 0 ]] ; then
     echo "Efi restore was unsuccessful!"
 ! mountpoint -q /mnt/efi || umount /mnt/efi
